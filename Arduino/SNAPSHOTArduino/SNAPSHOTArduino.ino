@@ -123,41 +123,20 @@ void loop() {
   // CONTROL DEL PRIMER LED
   estadoBoton1 = digitalRead(pulsador1);
     if (estadoBoton1 == HIGH) {
-        if(digitalRead(LED1) == HIGH){
-          Serial.println("L01F");
-          digitalWrite(LED1,LOW);
-          delay(360);
-          }else{
-            digitalWrite(LED1,HIGH);
-            Serial.println("L01T");
-            delay(360);
-            }      
+          String texto = "L01";
+          ControlLuzLed(LED1 , texto);        
     }
     // CONTROL DEL SEGUNDO LED
       estadoBoton2 = digitalRead(pulsador2);
     if (estadoBoton2 == HIGH) {
-        if(digitalRead(LED2) == HIGH){
-          Serial.println("L02F");
-          digitalWrite(LED2,LOW);
-          delay(360);
-          }else{
-            Serial.println("L02T");
-            digitalWrite(LED2,HIGH);
-            delay(360);
-            }      
+          String texto = "L02";
+          ControlLuzLed(LED2 , texto);
     }
     // CONTROL DEL TERCER LED
       estadoBoton3 = digitalRead(pulsador3);
     if (estadoBoton3 == HIGH) {
-        if(digitalRead(LED3) == HIGH){
-          Serial.println("L03F");
-          digitalWrite(LED3,LOW);
-          delay(360);
-          }else{
-            Serial.println("L03T");
-            digitalWrite(LED3,HIGH);
-            delay(360);
-            }      
+    String texto = "L03";
+    ControlLuzLed(LED3 , texto);
     }
 // CONTROL RGB
      estadobotonRgb = digitalRead(PULSADORRGB);
@@ -167,7 +146,42 @@ void loop() {
     if (contadorRgb >= 7){
       contadorRgb = 0;
       }
-          switch (contadorRgb) {
+      ControlLuzRgb(contadorRgb);     
+  }
+ 
+   //30000 lo ideal
+  if (presa > 999999){
+    Temperatura(presa);
+  }
+  presa = presa + 1;
+ 
+}
+
+ //METODO PARA CONTROL EL SENSOR DE TEMPERATURA
+void Temperatura(int presa){
+   //CONTROL SENSOR HUMEDAD Y TEMPERATURATURA
+    //ESPERAMOS 5 SEGUNDOS PARA LA TOMA DE TEMPERATURA Y HUMEDAD
+   //delay(1000);
+
+   // Reading temperature or humidity takes about 250 milliseconds!
+   float h = dht.readHumidity();
+   float t = dht.readTemperature();
+ 
+   if (isnan(h) || isnan(t)) {
+      Serial.println("Failed to read from DHT sensor!");
+      return;
+   }
+   Serial.print("Humedad : ");
+   Serial.println(h);
+   Serial.print("Temperatura : ");
+   Serial.println(t);
+   presa = 0;
+  }
+  
+//METODO PARA CONTROL LA LUZ RGB
+
+void ControlLuzRgb(int contadorRgb){
+    switch (contadorRgb) {
             case 0:
             //ROJO
               digitalWrite(LED_R, HIGH);
@@ -233,26 +247,15 @@ void loop() {
               break;
           }
   }
-  //CONTROL SENSOR HUMEDAD Y TEMPERATURATURA
-    //ESPERAMOS 5 SEGUNDOS PARA LA TOMA DE TEMPERATURA Y HUMEDAD
-   //delay(1000);
-
-   // Reading temperature or humidity takes about 250 milliseconds!
-   float h = dht.readHumidity();
-   float t = dht.readTemperature();
- 
-   if (isnan(h) || isnan(t)) {
-      Serial.println("Failed to read from DHT sensor!");
-      return;
-   }
-   //30000 lo ideal
-  if (presa > 999999){
-     Serial.print("Humedad : ");
-   Serial.println(h);
-   Serial.print("Temperatura : ");
-   Serial.println(t);
-   presa = 0;
+  //METODO PARA EL CONTROL DE LUCES LEDS
+void ControlLuzLed(int LED , String texto ){
+   if(digitalRead(LED) == HIGH){
+          Serial.println(texto+"F");
+          digitalWrite(LED,LOW);
+          delay(360);
+          }else{
+            Serial.println(texto+"T" );
+            digitalWrite(LED,HIGH);
+            delay(360);
+          }
   }
-  presa = presa + 1;
- 
-}
