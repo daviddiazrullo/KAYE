@@ -1,6 +1,7 @@
 import serial
 import Firebase
 import Confort
+import Puertas
 
 arduino = serial.Serial('/dev/ttyUSB0', 9600)
 
@@ -49,7 +50,11 @@ def leerArduino():
             if comando == 'LR0C':
                 Firebase.IOT().ControlArduino(comando)
                 comando = ""
+            if comando == 'P001T':
+                Firebase.IOT().Control_puerta(comando)
+                comando = ""
+            if comando == 'P001F':
+                Firebase.IOT().Control_puerta(comando)
+                comando = ""
             else:
                 Confort.confort().controlHumedadTemperatura(comando)
-
-

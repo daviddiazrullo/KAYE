@@ -1,11 +1,12 @@
+//LIBRERIA PARA EL SENSOR DE HUMEDAD Y TEMPERATURA
 #include <DHT.h>
 #include <DHT_U.h>
-
-//LIBRERIA PARA EL SENSOR DE HUMEDAD Y TEMPERATURA
 #include "DHT.h"
 #define DHTTYPE DHT11   // DHT 11
 
-  //CONTROL DE LAS LUCES
+//LIBRERIA PARA LOS SERVOS
+#include <Servo.h>
+//CONTROL DE LAS LUCES
    
 int LED1 = 30; //LED SALON
 int LED2 = 31; //LED COCINA
@@ -32,6 +33,13 @@ String mensaje;
 const int DHTPin = 36; // SENSOR DE TEMPERATURA Y HUMEDAD
 DHT dht(DHTPin, DHTTYPE);
 int presa = 0;
+//CONTROL DE SERVOS 
+Servo puertaPrincipal;  // create servo object to control a servo
+int pos = 0;   
+int pulsador = 40; 
+int estadoBoton=0;
+int tiempo = 0 ;
+boolean estado = false;
 
 void setup () { 
 Serial.begin(9600);
@@ -54,6 +62,10 @@ Serial.begin(9600);
 
  // SENSOR DE TEMPERATURA Y HUMEDAD
   dht.begin(); 
+
+ // CONTROL DE LOS SERVOS
+   pinMode (pulsador,INPUT);    //configurado de entrada
+    puertaPrincipal.attach(37);  // attaches the servo on pin 9 to the servo object
 }
 
 void loop() {
@@ -155,6 +167,42 @@ void loop() {
   }
   presa = presa + 1;
  
+//CONTROL PUERTA PRINCIPAL 
+ estadoBoton = digitalRead(pulsador);
+  if (estado == true){
+          tiempo++;
+    }
+  if(estadoBoton == HIGH && estado == false){
+      for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
+            // in steps of 1 degree
+            puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
+            delay(15);
+            // waits 15ms for the servo to reach the position
+            estado = true;
+      }
+        Serial.println("P001T");
+  
+    }
+    else if (estadoBoton == HIGH && estado == true){
+      for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+      puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
+      delay(15);
+      estado = false;// waits 15ms for the servo to reach the position
+      tiempo = 0; 
+    }
+    Serial.println("P001F");
+
+  }else if (tiempo >= 15 ){
+        for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+            puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
+            delay(15);
+            estado = false;// waits 15ms for the servo to reach the position
+        }
+    Serial.println("P001F");
+    tiempo = 0; 
+
+    }
+  delay(360);
 }
 
  //METODO PARA CONTROL EL SENSOR DE TEMPERATURA
