@@ -9,10 +9,12 @@ REF_COCINA = 'COCINA'
 REF_HABITACION = 'HABITACION'
 REF_LUCES = 'LUCES'
 REF_LUCES2 = 'LUCES'
+REF_PUERTAS = 'PUERTAS'
 REF_LUZ1 = 'led1'
 REF_LUZ2 = 'led2'
 REF_LUZ3 = 'led3'
 REF_RGB = 'RGB'
+REF_PUERTA_PRINCIPAL = 'Puerta-principal'
 
 
 
@@ -35,12 +37,16 @@ class IOT():
         self.refLuces = self.refSalon.child(REF_LUCES)
         self.refLuces2 = self.refCocina.child(REF_LUCES2)
         self.refLuces3 = self.refHabitacion.child(REF_LUCES)
+        # REFERENCIA AL APARTADO DE LAS PUERTAS DE LA BASE DE DATOS
+        #self.refPuertas = self.refSalon.child(REF_PUERTAS)
         # REFERENCIA A LOS LEDS DE LA CASA
         self.refled1 = self.refLuces.child(REF_LUZ1)  # SALON
         self.refled2 = self.refLuces2.child(REF_LUZ2)  # COCINA
         self.refled3 = self.refLuces3.child(REF_LUZ3)  # HABITACION
         # REFERENCIA AL APARTADO DE LA LUZ RGB DE LA BASE DE DATOS
         self.refRGB = self.refLuces.child(REF_RGB)
+        # REFERENCIA A LAS PUERTAS DE LA CASA
+        #self.refPuertaPrincipal = self.refPuertas(REF_PUERTA_PRINCIPAL)
         if ref == "refled1":
               estado = self.refled1.get()
         if ref == "refled2":
@@ -49,7 +55,10 @@ class IOT():
               estado = self.refled3.get()
         if ref == "refRGB":
               estado = self.refRGB.get()
+        #if ref == "Puerta-principal":
+        #      estado = self.refPuertaPrincipal.get()
         return estado
+
 
     def ControlArduino(self,comando):
         # REFERENCIA A LAS ESTANCIAS DE MI  CASA
@@ -70,7 +79,6 @@ class IOT():
         # REFERENCIA AL APARTADO DE LA LUZ RGB DE LA BASE DE DATOS
         self.refRGB = self.refLuces.child(REF_RGB)
         if comando == 'L01T':
-            # BUG NO VA A HACER NADA
             self.refled1.set("true")
             comando = ""
         elif comando == 'L01F':
@@ -105,4 +113,10 @@ class IOT():
             comando = ""
         if comando == 'LR0C':
             self.refRGB.set("LR0C")
+            comando = ""
+        if comando == 'P001T':
+            self.refRGB.set("true")
+            comando = ""
+        if comando == 'P001F':
+            self.refRGB.set("false")
             comando = ""

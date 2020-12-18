@@ -1,6 +1,7 @@
 import Firebase
 import Luces
 import Arduino
+import Puertas
 import threading
 
 
@@ -20,9 +21,14 @@ subproceso_leerArduino.daemon = True
 subproceso_luces = threading.Thread(target=Luces.Luces().controlluces)
 subproceso_luces.daemon = True
 
+subproceso_puertas = threading.Thread(target=Puertas.puertas().controlPuertas)
+subproceso_luces.daemon = True
+
 subproceso_luces.start()
 
 subproceso_leerArduino.start()
 
-signal.pause()
+subproceso_puertas.start()
 
+
+signal.pause()

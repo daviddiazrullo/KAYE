@@ -129,6 +129,13 @@ void loop() {
         digitalWrite(LED_G, HIGH);
         digitalWrite(LED_B, HIGH);
         contadorRgb = 5;
+        }
+       if (estado == "P001T"){
+        int envio = 0;
+        PuertaPrincipalAbrirADerecha(envio);
+      }else if (estado == "P001F"){
+        int envio = 0;
+        PuertaPrincipalCerrarDerecha(envio);
         }   
     } 
 
@@ -169,41 +176,55 @@ void loop() {
  
 //CONTROL PUERTA PRINCIPAL 
  estadoBoton = digitalRead(pulsador);
+ int envio = 1;
   if (estado == true){
           tiempo++;
     }
   if(estadoBoton == HIGH && estado == false){
-      for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
+     PuertaPrincipalAbrirADerecha(envio);  
+    }
+    else if (estadoBoton == HIGH && estado == true){
+    envio = 1;
+    PuertaPrincipalCerrarDerecha(envio);
+
+  }else if (tiempo >= 15 ){
+    envio = 1;
+    PuertaPrincipalCerrarDerecha(envio);
+    tiempo = 0; 
+    }
+  delay(360);
+}
+ //METODO PARA EL CONTROL DE LA PUERTA PRINCIPAL
+
+ void PuertaPrincipalAbrirADerecha(int envio){
+   if (estado != true ){
+    for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
             // in steps of 1 degree
             puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
             delay(15);
             // waits 15ms for the servo to reach the position
             estado = true;
       }
+      if (envio == 1){
         Serial.println("P001T");
-  
-    }
-    else if (estadoBoton == HIGH && estado == true){
-      for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-      puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
-      delay(15);
-      estado = false;// waits 15ms for the servo to reach the position
-      tiempo = 0; 
-    }
-    Serial.println("P001F");
-
-  }else if (tiempo >= 15 ){
-        for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-            puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
-            delay(15);
-            estado = false;// waits 15ms for the servo to reach the position
         }
-    Serial.println("P001F");
-    tiempo = 0; 
+    }
+   
+  }
+  void PuertaPrincipalCerrarDerecha(int envio){
+       if (estado != false ){
+          for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+              puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
+              delay(15);
+              estado = false;// waits 15ms for the servo to reach the position
+              tiempo = 0; 
+    }
+      if (envio == 1){
+          Serial.println("P001F");
+        }
+    }
 
     }
-  delay(360);
-}
 
  //METODO PARA CONTROL EL SENSOR DE TEMPERATURA
 void Temperatura(int presa){

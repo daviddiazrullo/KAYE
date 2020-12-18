@@ -51,10 +51,10 @@ def leerArduino():
                 Firebase.IOT().ControlArduino(comando)
                 comando = ""
             if comando == 'P001T':
-                Firebase.IOT().Control_puerta(comando)
+                Puertas.puertas().Control_puerta(comando)
                 comando = ""
             if comando == 'P001F':
-                Firebase.IOT().Control_puerta(comando)
+                Puertas.puertas().Control_puerta(comando)
                 comando = ""
             else:
                 Confort.confort().controlHumedadTemperatura(comando)

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.ButtonBarLayout;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +24,8 @@ public class MainActivity extends Activity {
     DatabaseReference refHabitacion = database.getReference("HABITACION");
     DatabaseReference refSalon = database.getReference("SALON");
     // REFERENECIA A LAS LUCES DE MI CASA
-    DatabaseReference refLuces1,refLuces2,refLuces3, refLed1, refled2,refled3,RGB,refTemperatura,refHumedad,refClimatizacion ;
-    ToggleButton btnToggle,btnToggle2,btnToggle3;
+    DatabaseReference refLuces1,refLuces2,refLuces3, refLed1, refled2,refled3,RGB,refTemperatura,refHumedad,refClimatizacion,refPuertasSalon,refPuertaEntrada ;
+    ToggleButton btnToggle,btnToggle2,btnToggle3,buttonPsalon;
     Button buttonRGB;
     TextView textEstadoPulsador , textHumedad, textTemperatura;
 
@@ -39,12 +40,16 @@ public class MainActivity extends Activity {
         refLuces1 = refSalon.child("LUCES");
         // REFERENCIA AL APARTADO DE CLIMATIZACION DEL SALON
         refClimatizacion = refSalon.child("CLIMATIZACION");
+        // REFERENCIA AL APARTADO DE PUERTAS DEL SALON
+        refPuertasSalon = refSalon.child("PUERTAS");
         refLed1  = refLuces1.child("led1");
         refled2= refLuces2.child("led2");
         refled3= refLuces3.child("led3");
         //REFERENCIA A LA TEMPERATURA Y LA HUMEDAD DEL SALON
         refTemperatura = refClimatizacion.child("temperatura");
         refHumedad = refClimatizacion.child("humedad");
+        // REFERENCIA AL APARTADO DE PUERTAS DEL SALON
+        refPuertaEntrada = refPuertasSalon.child("Puerta-principal");
         // REFERENCIA DEL RGB EN LA BASE DE DATOS
         RGB = refLuces1.child("RGB");
 
@@ -69,6 +74,12 @@ public class MainActivity extends Activity {
         //REFERENCIA DEL BOTON RGB
         buttonRGB = (Button) findViewById(R.id.buttonRGB);
 
+        //REFERENCIA DEL BOTON DE LA PUERTA DEL SALON
+        buttonPsalon = (ToggleButton) findViewById(R.id.toggleButtonPuertaSalon);
+        // TEXTO QUE SE MUESTRA EN EL BOTON
+        buttonPsalon.setTextOn("CERRAR");
+        buttonPsalon.setTextOff("ABRIR");
+
 
         textEstadoPulsador = (TextView) findViewById(R.id.textViewPulsador);
         textTemperatura = (TextView) findViewById(R.id.textTemperatura);
@@ -82,11 +93,14 @@ public class MainActivity extends Activity {
 
         sacarValorBDLuces(refled3,btnToggle3);
         controlLED(refled3, btnToggle3);
+
         sacarValorRgb(RGB);
         controlRGB(RGB,"0");
 
         sacarValorClimatizacion( refTemperatura,refHumedad);
 
+        sacarValorBDLuces(refPuertaEntrada,buttonPsalon);
+        controlLED(refPuertaEntrada, buttonPsalon);
     }
     // metodo para pasarle una renferencia concreta a la base de datos y te saca el valor y controlo el valor de un text view y Toggle boton especificos
     private void sacarValorBDLuces(final DatabaseReference refLed, final ToggleButton toggle_btn ){
@@ -296,7 +310,7 @@ public class MainActivity extends Activity {
                 //Saco el valor que tengo guardo en la ref deLuz1
                 String Dato2 = dataSnapshot.getValue().toString();
 
-                // Cambio el valor del text Vieew con el valor de la base de datos
+                // Cambio el valor del text View con el valor de la base de datos
                 textTemperatura.setText(Dato2);
             }
 

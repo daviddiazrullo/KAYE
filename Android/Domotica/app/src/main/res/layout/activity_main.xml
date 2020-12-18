@@ -11,15 +11,21 @@
     android:paddingBottom="16dp"
     tools:context=".MainActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="40dp"
-        android:gravity="center"
-        android:text="RASPBERRY PI - CONTROL"
-        android:textSize="22dp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:text="RASPBERRY PI - CONTROL"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -45,73 +51,209 @@
             android:textIsSelectable="false" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textToggleBtn"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="LUZ SALON"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="50dp" />
+        android:orientation="horizontal">
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="SI" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textToggleBtn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="LUZ COCINA"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="50dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <ToggleButton
-        android:id="@+id/toggleButton2"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="SI" />
+                <TextView
+                    android:id="@+id/textToggleBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="LUZ SALON"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
 
-    <TextView
-        android:id="@+id/textToggleBtn3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="LUZ HABITACION"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="50dp" />
+                <ToggleButton
+                    android:id="@+id/toggleButton"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
 
-    <ToggleButton
-        android:id="@+id/toggleButton3"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="SI" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textToggleBtn4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="LUZ RGB"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="50dp" />
+                <TextView
+                    android:id="@+id/textToggleBtn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="LUZ COCINA"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
 
-    <Button
-        android:id="@+id/buttonRGB"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="ENCENDER" />
+                <ToggleButton
+                    android:id="@+id/toggleButton2"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textToggleBtn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="LUZ HABITACION"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButton3"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textToggleBtn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="LUZ RGB"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
+
+                <Button
+                    android:id="@+id/buttonRGB"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="ENCENDER" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewPuertaSalon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="PUERTA SALON"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonPuertaSalon"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textToggleBtnCocina"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="PUERTA COCINA"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonPuertaCocina"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textToggleBtnHabitacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="PUERTA HABITACION"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonPuertaHabitacion"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textToggleBtnPatio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="PUERTA PATIO"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="50dp" />
+
+                <ToggleButton
+                    android:id="@+id/toggleButtonPuertaPatio"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="SI" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView"
