@@ -24,8 +24,9 @@ public class MainActivity extends Activity {
     DatabaseReference refHabitacion = database.getReference("HABITACION");
     DatabaseReference refSalon = database.getReference("SALON");
     // REFERENECIA A LAS LUCES DE MI CASA
-    DatabaseReference refLuces1,refLuces2,refLuces3, refLed1, refled2,refled3,RGB,refTemperatura,refHumedad,refClimatizacion,refPuertasSalon,refPuertaEntrada ;
-    ToggleButton btnToggle,btnToggle2,btnToggle3,buttonPsalon;
+    DatabaseReference refLuces1,refLuces2,refLuces3, refLed1, refled2,refled3,RGB,refTemperatura,refHumedad
+            ,refClimatizacion,refPuertasSalon,refPuertaEntrada, refPuertaHabitacion,refPuertasHabitacion, refPuertaCocina,refPuertasCocina  ;
+    ToggleButton btnToggle,btnToggle2,btnToggle3,buttonPsalon,buttonPhabitacion,buttonPcocina;
     Button buttonRGB;
     TextView textEstadoPulsador , textHumedad, textTemperatura;
 
@@ -40,18 +41,32 @@ public class MainActivity extends Activity {
         refLuces1 = refSalon.child("LUCES");
         // REFERENCIA AL APARTADO DE CLIMATIZACION DEL SALON
         refClimatizacion = refSalon.child("CLIMATIZACION");
-        // REFERENCIA AL APARTADO DE PUERTAS DEL SALON
-        refPuertasSalon = refSalon.child("PUERTAS");
         refLed1  = refLuces1.child("led1");
         refled2= refLuces2.child("led2");
         refled3= refLuces3.child("led3");
+
+        // REFERENCIA AL APARTADO DE PUERTAS DEL SALON
+        refPuertasSalon = refSalon.child("PUERTAS");
+
+        // REFERENCIA AL APARTADO DE PUERTAS DE LA HABITACION
+        refPuertasHabitacion = refHabitacion.child("PUERTAS");
+
+        // REFERENCIA AL APARTADO DE PUERTAS DE LA COCINA
+        refPuertasCocina = refCocina.child("PUERTAS");
+
         //REFERENCIA A LA TEMPERATURA Y LA HUMEDAD DEL SALON
         refTemperatura = refClimatizacion.child("temperatura");
         refHumedad = refClimatizacion.child("humedad");
-        // REFERENCIA AL APARTADO DE PUERTAS DEL SALON
-        refPuertaEntrada = refPuertasSalon.child("Puerta-principal");
+
         // REFERENCIA DEL RGB EN LA BASE DE DATOS
         RGB = refLuces1.child("RGB");
+
+        // REFERENCIA AL APARTADO DE PUERTAS DEL SALON
+        refPuertaEntrada = refPuertasSalon.child("Puerta-principal");
+        // REFERENCIA AL APARTADO DE PUERTA DE LA HABITACION
+        refPuertaHabitacion = refPuertasHabitacion.child("Puerta-habitacion");
+        // REFERENCIA AL APARTADO DE PUERTA DE LA HABITACION
+        refPuertaCocina = refPuertasCocina.child("Puerta-cocina");
 
         // REFERENCIA AL BOTON DE LA COCINA
         btnToggle2 = (ToggleButton)  findViewById(R.id.toggleButton2);
@@ -80,6 +95,17 @@ public class MainActivity extends Activity {
         buttonPsalon.setTextOn("CERRAR");
         buttonPsalon.setTextOff("ABRIR");
 
+        //REFERENCIA DEL BOTON DE LA PUERTA DE LA HABITACION
+        buttonPhabitacion = (ToggleButton) findViewById(R.id.toggleButtonPuertaHabitacion);
+        // TEXTO QUE SE MUESTRA EN EL BOTON
+        buttonPhabitacion.setTextOn("CERRAR");
+        buttonPhabitacion.setTextOff("ABRIR");
+
+        //REFERENCIA DEL BOTON DE LA PUERTA DE LA COCINA
+        buttonPcocina = (ToggleButton) findViewById(R.id.toggleButtonPuertaCocina);
+        // TEXTO QUE SE MUESTRA EN EL BOTON
+        buttonPcocina.setTextOn("ABRIR");
+        buttonPcocina.setTextOff("CERRAR");
 
         textEstadoPulsador = (TextView) findViewById(R.id.textViewPulsador);
         textTemperatura = (TextView) findViewById(R.id.textTemperatura);
@@ -101,6 +127,12 @@ public class MainActivity extends Activity {
 
         sacarValorBDLuces(refPuertaEntrada,buttonPsalon);
         controlLED(refPuertaEntrada, buttonPsalon);
+
+        sacarValorBDLuces(refPuertaHabitacion,buttonPhabitacion);
+        controlLED(refPuertaHabitacion, buttonPhabitacion);
+
+        sacarValorBDLuces(refPuertaCocina,buttonPcocina);
+        controlLED(refPuertaCocina, buttonPcocina);
     }
     // metodo para pasarle una renferencia concreta a la base de datos y te saca el valor y controlo el valor de un text view y Toggle boton especificos
     private void sacarValorBDLuces(final DatabaseReference refLed, final ToggleButton toggle_btn ){

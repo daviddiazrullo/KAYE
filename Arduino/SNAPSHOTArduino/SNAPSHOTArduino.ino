@@ -34,12 +34,25 @@ const int DHTPin = 36; // SENSOR DE TEMPERATURA Y HUMEDAD
 DHT dht(DHTPin, DHTTYPE);
 int presa = 0;
 //CONTROL DE SERVOS 
+// CONTROL SERVO PUERTA PRINCIPAL
 Servo puertaPrincipal;  // create servo object to control a servo
 int pos = 0;   
-int pulsador = 40; 
+int pulsadorPuertaPricipal = 40; 
 int estadoBoton=0;
 int tiempo = 0 ;
 boolean estado = false;
+// CONTROL SERVO PUERTA HABITACION
+Servo puertaHabitacion;  // create servo object to control a servoint pulsadorPuertaHabitacion = 42; 
+int estadoBotonHabitacion=0;
+boolean estadoHabitacion = false;
+int pulsadorPuertaHabitacion = 42;
+//CONTROL SERVO PUERTA COCINA 
+Servo puertaCocina;  // create servo object to control a servoint pulsadorPuertaHabitacion = 42; 
+int estadoBotonCocina = 0;
+boolean estadoCocina = false;
+int pulsadorPuertaCocina = 44;
+
+Servo Puertas[3] = {puertaPrincipal , puertaHabitacion, puertaCocina };
 
 void setup () { 
 Serial.begin(9600);
@@ -64,8 +77,15 @@ Serial.begin(9600);
   dht.begin(); 
 
  // CONTROL DE LOS SERVOS
-   pinMode (pulsador,INPUT);    //configurado de entrada
-    puertaPrincipal.attach(37);  // attaches the servo on pin 9 to the servo object
+ //PUERTA PRINCIPAL
+   pinMode (pulsadorPuertaPricipal,INPUT);    //configurado de entrada
+    Puertas[0].attach(37);  
+ //PUERTA HABITACION
+    pinMode (pulsadorPuertaHabitacion,INPUT);    //configurado de entrada
+    Puertas[1].attach(41);
+  //PUERTA COCINA
+    pinMode (pulsadorPuertaCocina,INPUT);    //configurado de entrada
+    Puertas[2].attach(43);   
 }
 
 void loop() {
@@ -131,12 +151,32 @@ void loop() {
         contadorRgb = 5;
         }
        if (estado == "P001T"){
+        String codigo = "";
         int envio = 0;
-        PuertaPrincipalAbrirADerecha(envio);
+        PuertaPrincipalAbrirADerecha(envio, Puertas[0],true,codigo);
       }else if (estado == "P001F"){
+        String codigo = "";
         int envio = 0;
-        PuertaPrincipalCerrarDerecha(envio);
-        }   
+        PuertaPrincipalCerrarDerecha(envio, Puertas[0],false ,codigo);
+        }
+      if (estado == "P002T"){
+        String codigo = "";
+        int envio = 0;
+        PuertaPrincipalAbrirADerecha(envio, Puertas[1], true,codigo);
+      }else if (estado == "P002F"){
+        String codigo = "";
+        int envio = 0;
+        PuertaPrincipalCerrarDerecha(envio, Puertas[1] , false,codigo);
+        }      
+      if (estado == "P003T"){
+        String codigo = "";
+        int envio = 0;
+        PuertaPrincipalAbrirADerecha(envio, Puertas[2], true,codigo);
+      }else if (estado == "P003F"){
+        String codigo = "";
+        int envio = 0;
+        PuertaPrincipalCerrarDerecha(envio, Puertas[2] , false,codigo);
+        } 
     } 
 
   // CONTROL DEL PRIMER LED
@@ -175,55 +215,95 @@ void loop() {
   presa = presa + 1;
  
 //CONTROL PUERTA PRINCIPAL 
- estadoBoton = digitalRead(pulsador);
+ String codigo = "";
+ estadoBoton = digitalRead(pulsadorPuertaPricipal);
  int envio = 1;
   if (estado == true){
           tiempo++;
     }
   if(estadoBoton == HIGH && estado == false){
-     PuertaPrincipalAbrirADerecha(envio);  
+     codigo = "P001T";
+     PuertaPrincipalAbrirADerecha(envio, Puertas[0],false,codigo);
+     estado = true;  
     }
     else if (estadoBoton == HIGH && estado == true){
+    codigo = "P001F";  
     envio = 1;
-    PuertaPrincipalCerrarDerecha(envio);
+    PuertaPrincipalCerrarDerecha(envio, Puertas[0],true,codigo);
+    estado = false;
 
   }else if (tiempo >= 15 ){
+    codigo = "P001F";  
     envio = 1;
-    PuertaPrincipalCerrarDerecha(envio);
+    //PuertaPrincipalCerrarDerecha(envio, Puertas[0],estado,codigo);
     tiempo = 0; 
     }
   delay(360);
+  //CONTROL PUERTA HABITACION 
+ estadoBotonHabitacion = digitalRead(pulsadorPuertaHabitacion);
+ int envioHabitacion = 1;
+
+  if(estadoBotonHabitacion == HIGH && estadoHabitacion == false){
+     codigo = "P002T";  
+     PuertaPrincipalAbrirADerecha(envio, Puertas[1] ,false,codigo); 
+     estadoHabitacion = true; 
+    }
+    else if (estadoBotonHabitacion == HIGH && estadoHabitacion == true){
+    envio = 1;
+    codigo = "P002F";  
+    PuertaPrincipalCerrarDerecha(envio, Puertas[1],true,codigo);
+    estadoHabitacion = false;
+
+  }
+  delay(360);
+  //CONTROL PUERTA HABITACION 
+ estadoBotonCocina = digitalRead(pulsadorPuertaCocina );
+ int envioCocina = 1;
+
+  if(estadoBotonCocina == HIGH && estadoCocina == false){
+     codigo = "P003T";  
+     PuertaPrincipalAbrirADerecha(envio, Puertas[2] ,false,codigo); 
+     estadoCocina = true; 
+    }
+    else if (estadoBotonCocina == HIGH && estadoCocina == true){
+    envio = 1;
+    codigo = "P003F";  
+    PuertaPrincipalCerrarDerecha(envio, Puertas[2],true,codigo);
+    estadoCocina = false;
+
+  }
+  delay(360);  
 }
  //METODO PARA EL CONTROL DE LA PUERTA PRINCIPAL
 
- void PuertaPrincipalAbrirADerecha(int envio){
-   if (estado != true ){
-    for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
+ void PuertaPrincipalAbrirADerecha(int envio, Servo Puerta, boolean estadoPuerta,String codigo){
+  Serial.println(Puerta.read());
+   if(Puerta.read() != 90){
+        for (pos = 0; pos <= 90; pos += 1) { // goes from 0 degrees to 180 degrees
             // in steps of 1 degree
-            puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
+            Puerta.write(pos);              // tell servo to go to position in variable 'pos'
             delay(15);
             // waits 15ms for the servo to reach the position
-            estado = true;
+            //estadoPuerta = true;
       }
       if (envio == 1){
-        Serial.println("P001T");
+        Serial.println(codigo);
         }
     }
-   
   }
-  void PuertaPrincipalCerrarDerecha(int envio){
-       if (estado != false ){
-          for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
-              puertaPrincipal.write(pos);              // tell servo to go to position in variable 'pos'
+  void PuertaPrincipalCerrarDerecha(int envio, Servo Puerta , boolean estadoPuerta , String codigo){
+     Serial.println(Puerta.read());
+   if(Puerta.read() != 0){
+     for (pos = 90; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+              Puerta.write(pos);              // tell servo to go to position in variable 'pos'
               delay(15);
-              estado = false;// waits 15ms for the servo to reach the position
+              //estadoPuerta = false;
               tiempo = 0; 
     }
       if (envio == 1){
-          Serial.println("P001F");
+          Serial.println(codigo);
         }
-    }
-
+    }     
     }
 
  //METODO PARA CONTROL EL SENSOR DE TEMPERATURA

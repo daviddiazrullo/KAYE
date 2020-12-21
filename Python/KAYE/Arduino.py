@@ -56,5 +56,17 @@ def leerArduino():
             if comando == 'P001F':
                 Puertas.puertas().Control_puerta(comando)
                 comando = ""
+            if comando == 'P002T':
+                Puertas.puertas().Control_puerta(comando)
+                comando = ""
+            if comando == 'P002F':
+                Puertas.puertas().Control_puerta(comando)
+                comando = ""
+            if comando == 'P003T':
+                Puertas.puertas().Control_puerta(comando)
+                comando = ""
+            if comando == 'P003F':
+                Puertas.puertas().Control_puerta(comando)
+                comando = ""
             else:
                 Confort.confort().controlHumedadTemperatura(comando)
