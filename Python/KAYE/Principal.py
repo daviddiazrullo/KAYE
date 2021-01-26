@@ -18,6 +18,9 @@ iniciar = Firebase.IOT().iniciar()
 subproceso_leerArduino = threading.Thread(target=Arduino.leerArduino)
 subproceso_leerArduino.daemon = True
 
+subproceso_leerArduinoNano = threading.Thread(target=Arduino.leerArduinoNano)
+subproceso_leerArduinoNano.daemon = True
+
 subproceso_luces = threading.Thread(target=Luces.Luces().controlluces)
 subproceso_luces.daemon = True
 
@@ -27,6 +30,8 @@ subproceso_luces.daemon = True
 subproceso_luces.start()
 
 subproceso_leerArduino.start()
+
+subproceso_leerArduinoNano.start()
 
 subproceso_puertas.start()
 

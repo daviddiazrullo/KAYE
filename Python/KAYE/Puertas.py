@@ -15,7 +15,13 @@ REF_COCINA = 'COCINA'
 REF_PUERTAS_COCINA = 'PUERTAS'
 REF_PUERTA_COCINA = 'Puerta-cocina'
 
+REF_PATIO = 'PATIO'
+REF_PUERTAS_PATIO = 'PUERTAS'
+REF_PUERTA_CORREDERA = 'Puerta-Corredera'
+
 arduino = serial.Serial('/dev/ttyUSB0', 9600)
+arduinoNano = serial.Serial('/dev/ttyUSB1', 9600)
+
 
 
 class puertas:
@@ -31,6 +37,11 @@ class puertas:
         self.REF_COCINA = db.reference(REF_COCINA)
         self.REF_PUERTAS_COCINA = self.REF_COCINA.child(REF_PUERTAS_COCINA)
         self.REF_PUERTA_COCINA = self.REF_PUERTAS_COCINA.child(REF_PUERTA_COCINA)
+        #REFERENCIAS A LA PUERTA DEL PATIO
+        self.REF_PATIO = db.reference(REF_PATIO)
+        self.REF_PUERTAS_PATIO = self.REF_PATIO.child(REF_PUERTAS_PATIO)
+        self.REF_PUERTA_CORREDERA = self.REF_PUERTAS_PATIO.child(REF_PUERTA_CORREDERA)
+
         if comando == 'P001T':
             self.REF_PUERTA_PRINCIPAL.set("true")
             comando = ""
@@ -51,6 +62,12 @@ class puertas:
         elif comando == 'P003F':
             self.REF_PUERTA_COCINA.set("false")
             comando = ""
+        if comando == 'P004T':
+            self.REF_PUERTA_CORREDERA.set("true")
+            comando = ""
+        elif comando == 'P004F':
+            self.REF_PUERTA_CORREDERA.set("false")
+            comando = ""
 
     def controlPuertas(self):
         self.REF_SALON = db.reference(REF_SALON)
@@ -64,34 +81,47 @@ class puertas:
         self.REF_COCINA = db.reference(REF_COCINA)
         self.REF_PUERTAS_COCINA = self.REF_COCINA.child(REF_PUERTAS_COCINA)
         self.REF_PUERTA_COCINA = self.REF_PUERTAS_COCINA.child(REF_PUERTA_COCINA)
+        #REFERENCIAS A LA PUERTA DEL PATIO
+        self.REF_PATIO = db.reference(REF_PATIO)
+        self.REF_PUERTAS_PATIO = self.REF_PATIO.child(REF_PUERTAS_PATIO)
+        self.REF_PUERTA_CORREDERA = self.REF_PUERTAS_PATIO.child(REF_PUERTA_CORREDERA)
         print("Metodo Puertas")
         E, i = [], 0
         E1, i = [], 0
         E2, i = [], 0
+        E3, i = [], 0
+
 
         puertas = ["Puerta-principal","Puerta-habitacion","Puerta-cocina"]
         estado_anterior = self.REF_PUERTA_PRINCIPAL.get()
         estado_anterior1 = self.REF_PUERTA_HABITACION.get()
         estado_anterior2 = self.REF_PUERTA_COCINA.get()
-
+        estado_anterior3 = self.REF_PUERTA_CORREDERA.get()
 
         self.puertaControlGPIO(estado_anterior, "Puerta-principal")
         self.puertaControlGPIO(estado_anterior1, "Puerta-habitacion")
         self.puertaControlGPIO(estado_anterior2, "Puerta-cocina")
+        self.puertaControlGPIO(estado_anterior3, "Puerta-Corredera")
 
 
         E.append(estado_anterior)
         E1.append(estado_anterior1)
         E2.append(estado_anterior2)
+        E3.append(estado_anterior3)
+
 
         while True:
             estado_actual = self.REF_PUERTA_PRINCIPAL.get()
             estado_actual1 = self.REF_PUERTA_HABITACION.get()
             estado_actual2 = self.REF_PUERTA_COCINA.get()
+            estado_actual3 = self.REF_PUERTA_CORREDERA.get()
+
 
             E.append(estado_actual)
             E1.append(estado_actual1)
             E2.append(estado_actual2)
+            E3.append(estado_actual3)
+
 
 
             if E[i] != E[-1]:
@@ -112,6 +142,12 @@ class puertas:
                 ref = "Puerta-cocina"
                 self.puertaControlGPIO(estado_actual2, ref)
             del E2[0]
+            i = i + i
+            sleep(0.4)
+            if E3[i] != E3[-1]:
+                ref = "Puerta-Corredera"
+                self.puertaControlGPIO(estado_actual3, ref)
+            del E3[0]
             i = i + i
             sleep(0.4)
 
@@ -138,3 +174,10 @@ class puertas:
             else:
                 print('Puerta cocina cerrada')
                 arduino.write('P003F')
+        if refe == "Puerta-Corredera":
+            if estado:
+                print('Puerta Corredera abierta')
+                arduinoNano.write("P004T")
+            else:
+                print('Puerta Corredera cerrada')
+                arduinoNano.write('P004F')

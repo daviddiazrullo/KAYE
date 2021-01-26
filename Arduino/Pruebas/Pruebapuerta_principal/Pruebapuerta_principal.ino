@@ -17,29 +17,41 @@ void setup() {
 }
 
 void loop() {
-      //Retroceder();
-
+ if(Serial.available()){
+    String estado = Serial.readString();
+    if (estado == "P004T"){
+    Avance();
+    delay(3700);
+    Stop();
+    delay(3600);
+    Serial.println("P004F");      
+      }else if (estado == "P004F"){
+    Stop();
+        }
+ }
   // put your main code here, to run repeatedly:
    int botonFinalDeCarrera = digitalRead(Fcarrera); 
   int estadoboton = digitalRead(Boton);
   if(estadoboton == HIGH && botonFinalDeCarrera == HIGH){
-    Serial.println("Boton pulsado");
+    Serial.println("P004T");
     Avance();
-    delay(3700);
+    delay(1850);
     Stop();
-    Serial.print("Parado");
+    Serial.println("Parado");
     delay(3600);
+    Serial.println("P004F");
 
   }   
       if (botonFinalDeCarrera == HIGH ){
       Stop();
+
     
     }else{
       Retroceder();
-      Serial.print("Para atras");
-
       }
+
 }
+
 void Stop(){
   analogWrite(ENB, 0);  // velocidad mediante PWM en ENB
   digitalWrite(IN3, LOW); // IN3 a cero logico
@@ -47,14 +59,14 @@ void Stop(){
   }
 void Avance(){  // funcion para avance de motor A
 
-  analogWrite(ENB, 255);  // velocidad mediante PWM en ENB
+  analogWrite(ENB, 130);  // velocidad mediante PWM en ENB
   digitalWrite(IN3, LOW); // IN3 a cero logico
   digitalWrite(IN4, HIGH);  // IN4 a uno logico
 }
 
 void Retroceder(){  // funcion para avance de motor A
 
-  analogWrite(ENB, 255);  // velocidad mediante PWM en ENB
+  analogWrite(ENB, 130);  // velocidad mediante PWM en ENB
   digitalWrite(IN3, HIGH); // IN3 a cero logico
   digitalWrite(IN4, LOW);  // IN4 a uno logico
 }

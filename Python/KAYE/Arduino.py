@@ -4,6 +4,7 @@ import Confort
 import Puertas
 
 arduino = serial.Serial('/dev/ttyUSB0', 9600)
+arduinoNano = serial.Serial('/dev/ttyUSB1', 9600)
 
 
 def leerArduino():
@@ -69,4 +70,22 @@ def leerArduino():
                 Puertas.puertas().Control_puerta(comando)
                 comando = ""
             else:
+                Confort.confort().controlHumedadTemperatura(comando)
+
+def leerArduinoNano():
+    print("Arduino escuchando")
+    comando = ' '
+    while True:
+       if (arduinoNano.in_waiting > 0):
+           line = arduinoNano.readline()
+           #IMPRIME EL MENSAJE QUE ENVIA ARDUINO
+           #print(line.strip())
+           comando = line.strip()
+           if comando == 'P004T':
+                Puertas.puertas().Control_puerta(comando)
+                comando = ""
+           if comando == 'P004F':
+                Puertas.puertas().Control_puerta(comando)
+                comando = ""
+           else:
                 Confort.confort().controlHumedadTemperatura(comando)
