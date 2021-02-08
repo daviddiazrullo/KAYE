@@ -19,8 +19,8 @@ REF_PATIO = 'PATIO'
 REF_PUERTAS_PATIO = 'PUERTAS'
 REF_PUERTA_CORREDERA = 'Puerta-Corredera'
 
-arduino = serial.Serial('/dev/ttyUSB0', 9600)
-arduinoNano = serial.Serial('/dev/ttyUSB1', 9600)
+arduino = serial.Serial('/dev/ttyUSB0', 115200)
+arduinoNano = serial.Serial('/dev/ttyUSB1', 115200)
 
 
 
@@ -112,41 +112,43 @@ class puertas:
 
         while True:
             estado_actual = self.REF_PUERTA_PRINCIPAL.get()
-            estado_actual1 = self.REF_PUERTA_HABITACION.get()
-            estado_actual2 = self.REF_PUERTA_COCINA.get()
-            estado_actual3 = self.REF_PUERTA_CORREDERA.get()
-
-
             E.append(estado_actual)
-            E1.append(estado_actual1)
-            E2.append(estado_actual2)
-            E3.append(estado_actual3)
-
-
-
             if E[i] != E[-1]:
-                ref = "Puerta-principal"
-                self.puertaControlGPIO(estado_actual, ref)
+                if estado_actual :
+                    print('Puerta principal abierta')
+                    arduino.write("P001T")
+                else:
+                    print('Puerta principal cerrada')
+                    arduino.write("P001F")
             del E[0]
             i = i + i
             sleep(0.4)
-
+            estado_actual1 = self.REF_PUERTA_HABITACION.get()
+            E1.append(estado_actual1)
             if E1[i] != E1[-1]:
                 ref = "Puerta-habitacion"
                 self.puertaControlGPIO(estado_actual1, ref)
             del E1[0]
             i = i + i
             sleep(0.4)
-
+            estado_actual2 = self.REF_PUERTA_COCINA.get()
+            E2.append(estado_actual2)
             if E2[i] != E2[-1]:
                 ref = "Puerta-cocina"
                 self.puertaControlGPIO(estado_actual2, ref)
             del E2[0]
             i = i + i
             sleep(0.4)
+
+            estado_actual3 = self.REF_PUERTA_CORREDERA.get()
+            E3.append(estado_actual3)
             if E3[i] != E3[-1]:
-                ref = "Puerta-Corredera"
-                self.puertaControlGPIO(estado_actual3, ref)
+                if estado_actual3 :
+                    print('Puerta Corredera abierta')
+                    arduinoNano.write("P004T")
+                else:
+                    print('Puerta Corredera cerrada')
+                    arduinoNano.write('P004F')
             del E3[0]
             i = i + i
             sleep(0.4)

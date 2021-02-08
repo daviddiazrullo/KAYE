@@ -19,7 +19,7 @@ REF_LUZ1 = 'led1'
 REF_LUZ2 = 'led2'
 REF_LUZ3 = 'led3'
 REF_RGB = 'RGB'
-arduino = serial.Serial('/dev/ttyUSB0', 9600)
+arduino = serial.Serial('/dev/ttyUSB0', 115200)
 
 
 class IOT():
@@ -77,7 +77,7 @@ class IOT():
             else:
                 print('LED OFF')
                 arduino.write('L01F')
-        if refe == "refled2":        
+        if refe == "refled2":
             if estado:
                 print('LED ON')
                 arduino.write('L02T')
@@ -103,16 +103,16 @@ class IOT():
                 arduino.write('LR0G')
             if estado == 'LR0B':
                 print('LED AZUL')
-                arduino.write('LR0B')          
+                arduino.write('LR0B')
             if estado == 'LR0Y':
                 print('LED AMARILLO')
-                arduino.write('LR0Y') 
+                arduino.write('LR0Y')
             if estado == 'LR0P':
                 print('LED MORADO')
                 arduino.write('LR0P')
             if estado == 'LR0C':
                 print('LED CELESTE')
-                arduino.write('LR0C')  
+                arduino.write('LR0C')
 
     def luces(self):
         print("Metodo luces")
@@ -172,7 +172,7 @@ class IOT():
 
     def leerArduino(self):
         print("Arduino escuchando")
-        comando = ' ' 
+        comando = ' '
         while True:
             if (arduino.in_waiting > 0):
                 line = arduino.readline()
@@ -237,4 +237,3 @@ subproceso_RGB.start()
 subproceso_leerArduino.start()
 
 signal.pause()
-

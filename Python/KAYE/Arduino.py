@@ -3,8 +3,8 @@ import Firebase
 import Confort
 import Puertas
 
-arduino = serial.Serial('/dev/ttyUSB0', 9600)
-arduinoNano = serial.Serial('/dev/ttyUSB1', 9600)
+arduino = serial.Serial('/dev/ttyUSB0', 115200)
+arduinoNano = serial.Serial('/dev/ttyUSB1', 115200)
 
 
 def leerArduino():

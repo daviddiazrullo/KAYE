@@ -2,7 +2,7 @@ import Firebase
 from time import sleep
 import serial
 
-arduino = serial.Serial('/dev/ttyUSB0', 9600)
+arduino = serial.Serial('/dev/ttyUSB0', 115200)
 
 
 class Luces():
@@ -35,28 +35,38 @@ class Luces():
             estado_actual4 = Firebase.IOT().estadoActual("refRGB")
 
             E1.append(estado_actual1)
-            E2.append(estado_actual2)
-            E3.append(estado_actual3)
-            E4.append(estado_actual4)
-
             if E1[i] != E1[-1]:
-                ref = luces[0]
-                self.ledControlGPIO(estado_actual1, ref)
+                if estado_actual1 :
+                    print('LED 1 ON')
+                    arduino.write("L01T")
+                else:
+                    print('LED 1 OFF')
+                    arduino.write('L01F')
             del E1[0]
             i = i + i
             sleep(0.4)
+
+            E2.append(estado_actual2)
             if E2[x] != E2[-1]:
-                ref = luces[1]
-                self.ledControlGPIO(estado_actual2, ref)
+                if estado_actual2 :
+                    print('LED 2 ON')
+                    arduino.write('L02T')
+                else:
+                    print('LED 2 OFF')
+                    arduino.write('L02F')
             del E2[0]
             x = x + x
             sleep(0.4)
+
+            E3.append(estado_actual3)
             if E3[z] != E3[-1]:
                ref = luces[2]
                self.ledControlGPIO(estado_actual3, ref)
             del E3[0]
             z = z + z
             sleep(0.4)
+
+            E4.append(estado_anterior4)
             if E4[i] != E4[-1]:
                 ref = "RGB"
                 self.ledControlGPIO(estado_actual4, ref)
@@ -108,4 +118,3 @@ class Luces():
             if estado == 'LR0C':
                 print('LED RGB CELESTE')
                 arduino.write('LR0C')
-

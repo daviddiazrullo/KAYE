@@ -55,7 +55,7 @@ int pulsadorPuertaCocina = 44;
 Servo Puertas[3] = {puertaPrincipal , puertaHabitacion, puertaCocina };
 
 void setup () { 
-Serial.begin(9600);
+Serial.begin(115200);
 
 ////CONTROL DE LAS LUCES
   pinMode (LED1, OUTPUT);       //configurado como salida
