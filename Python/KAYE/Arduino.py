@@ -2,6 +2,7 @@ import serial
 import Firebase
 import Confort
 import Puertas
+import Ventanas
 
 arduino = serial.Serial('/dev/ttyUSB0', 115200)
 arduinoNano = serial.Serial('/dev/ttyUSB1', 115200)
@@ -68,6 +69,12 @@ def leerArduino():
                 comando = ""
             if comando == 'P003F':
                 Puertas.puertas().Control_puerta(comando)
+                comando = ""
+            if comando == 'V001T':
+                Ventanas.ventanas().Control_ventana(comando)
+                comando = ""
+            if comando == 'V001F':
+                Ventanas.ventanas().Control_ventana(comando)
                 comando = ""
             else:
                 Confort.confort().controlHumedadTemperatura(comando)
